@@ -2,16 +2,16 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { BrandEntity } from './brand.entity';
-import { ProductColorsEntity } from './product-color.entity';
 
-@Entity({ name: 'products' })
-export class ProductEntity {
+@Entity({ name: 'categories' })
+export class CategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,26 +21,15 @@ export class ProductEntity {
   @Column()
   brandId: number;
 
-  @Column()
-  colorId: number;
-
-  @ManyToOne(() => BrandEntity, (brand) => brand.products, {
+  @ManyToMany(() => BrandEntity, (brand) => brand.categories, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({
     name: 'brandId',
   })
-  brand: BrandEntity;
-
-  @ManyToOne(() => ProductColorsEntity, (color) => color.products, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({
-    name: 'colorId',
-  })
-  color: ProductColorsEntity;
+  @JoinTable({ name: 'brands_categories' })
+  brands: BrandEntity[];
 
   @Column({
     type: 'datetime',

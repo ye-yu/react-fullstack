@@ -5,19 +5,22 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  ManyToMany,
-  JoinColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
-import { CategoryEntity } from './category.entity';
 
-@Entity({ name: 'brands' })
-export class BrandEntity {
+@Entity({ name: 'product_colors' })
+export class ProductColorsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
+
+  @OneToMany(() => ProductEntity, (product) => product.color, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  products: ProductEntity[];
 
   @Column({
     type: 'datetime',
@@ -30,13 +33,4 @@ export class BrandEntity {
   })
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToMany(() => ProductEntity, (product) => product.brand)
-  products: ProductEntity;
-
-  @ManyToMany(() => CategoryEntity, (category) => category.brands)
-  @JoinColumn({
-    name: 'categoryId',
-  })
-  categories: CategoryEntity[];
 }
