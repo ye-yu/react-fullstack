@@ -1,14 +1,9 @@
 import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { DataSource, Repository } from 'typeorm';
-import { DatabaseConfig } from './database.config';
-import { NoArgConstructor } from 'src/common/types/no-arg-constructor.type';
-import { EntitiesToken } from './constants/entities-token.constant';
-import { BrandEntity } from './entities/brand.entity';
-import { ProductEntity } from './entities/product.entity';
 import { BrandRepo } from './repos/brand.repo';
 import { ProductRepo } from './repos/product.repo';
 import { SingleArgConstructor } from 'src/common/types/single-arg-constructor.type';
+import { defaultDataSource } from './database.source';
 
 const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   BrandRepo,
@@ -19,23 +14,7 @@ const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   providers: [
     {
       provide: DataSource,
-      useFactory(
-        configService: ConfigService<DatabaseConfig, true>,
-        entities: NoArgConstructor[],
-      ): DataSource {
-        const databaseUrl = configService.get('DATABASE_URL');
-
-        return new DataSource({
-          type: 'postgres',
-          url: databaseUrl,
-          entities,
-        });
-      },
-      inject: [ConfigService, EntitiesToken],
-    },
-    {
-      provide: EntitiesToken,
-      useValue: [BrandEntity, ProductEntity],
+      useValue: defaultDataSource,
     },
     ...repositories,
   ],
