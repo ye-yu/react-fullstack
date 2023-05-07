@@ -83,21 +83,26 @@ export const InitialSeed: SeederType = {
         .toString(26)
         .slice(2, 8)
         .toUpperCase();
+
+      const brandColor = Math.random().toString(16).substring(2, 8);
       const products = Array.from({ length: 10 }).map((_, index) => {
         const indexString = `${index}`.padStart(4, '0');
         const selectedColors = select(colors, 2, 4);
         const selectedCategory = selectOne(categories);
-        const fakedName = faker.commerce.product();
+        const fakedName = faker.commerce.productName();
+        const name = `${fakedName} ${selectedCategory.name}`;
+        const nameSpacedByPlus = name.split(' ').join('+');
         const product: Omit<
           ProductEntity,
-          'id' | 'brand' | 'brandId' | 'categoryId'
+          'id' | 'brand' | 'brandId' | 'categoryId' | 'colorId'
         > = {
           productStringId: `${productPrefix}${indexString}`,
           priceMYR: 500 + Math.ceil(Math.random() * 3000),
-          name: `${fakedName} ${selectedCategory.name}`,
-          photos: [],
-          stockCount: 0,
-          colorId: 0,
+          name,
+          photos: [
+            `https://dummyimage.com/600x400/${brandColor}/333.png&text=${nameSpacedByPlus}`,
+          ],
+          stockCount: 1,
           colors: selectedColors,
           category: selectedCategory,
           createdAt: new Date(),
