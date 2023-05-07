@@ -1,0 +1,18 @@
+GET /orders HTTP/1.1
+host: {{host}}
+
+###
+POST /orders HTTP/1.1
+host: {{host}}
+content-type: application/json
+
+{
+  "productId": 3
+}
+
+###
+PATCH /orders/3 HTTP/1.1
+host: {{host}}
+content-type: application/json
+
+{ "status": "Completed" }
