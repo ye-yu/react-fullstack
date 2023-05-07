@@ -23,9 +23,9 @@ export class ProductsService {
       where.brandId = In(filter.brandIds);
     }
 
-    if (filter.colorIds) {
-      where.colorId = In(filter.colorIds);
-    }
+    // if (filter.colorIds) {
+    //   where.colorId = In(filter.colorIds);
+    // }
 
     if (filter.name) {
       where.name = ILike(`%${filter.name}%`);
