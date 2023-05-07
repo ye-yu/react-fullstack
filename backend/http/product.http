@@ -4,5 +4,5 @@ Content-Type: application/json
 
 {
   "categoryIds": [1],
-  "name": ""
+  "colorIds": [1]
 }
