@@ -88,6 +88,9 @@ export class OrdersService {
     const orderHistory = await this.orderHistoryRepo.find({
       take: paginationOption.size,
       skip: (paginationOption.page - 1) * paginationOption.size,
+      order: {
+        id: 'desc',
+      },
     });
 
     const result: PaginationResults<OrderHistoryEntity> = {
