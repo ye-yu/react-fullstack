@@ -110,7 +110,7 @@ export function ProductPanel() {
           {productIsAvailable && (
             <Row className="gx-5 gy-5">
               {currentData.results.map((value) => (
-                <Col key={value.id} xs="3">
+                <Col key={`${value.id}-${value.color.id}`} xs="3">
                   <Card>
                     <img src={value.photo} alt={value.name} />
                     <CardBody>
