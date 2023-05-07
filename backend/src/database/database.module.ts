@@ -5,11 +5,15 @@ import { ProductRepo } from './repos/product.repo';
 import { SingleArgConstructor } from '../common/types/single-arg-constructor.type';
 import { defaultDataSource } from './database.source';
 import { OrderHistoryRepo } from './repos/order-history.repo';
+import { ColorsRepo } from './repos/colors.repo';
+import { CategoryRepo } from './repos/category.repo';
 
 const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   BrandRepo,
   ProductRepo,
   OrderHistoryRepo,
+  ColorsRepo,
+  CategoryRepo,
 ];
 
 @Module({
