@@ -58,7 +58,7 @@ export function ProductPanel() {
   const emptyProducts =
     !requesting && currentData && currentData.results.length === 0;
   const productIsAvailable =
-    !requesting && currentData && currentData.results.length;
+    !requesting && currentData && currentData.results.length !== 0;
 
   const lastPage = !currentData
     ? 0
