@@ -112,7 +112,7 @@ export function ProductPanel() {
               {currentData.results.map((value) => (
                 <Col key={value.id} xs="3">
                   <Card>
-                    <img src={value.photos.find((e) => e)} alt={value.name} />
+                    <img src={value.photo} alt={value.name} />
                     <CardBody>
                       <CardTitle tag="h5">
                         {value.name} ({value.color.name})

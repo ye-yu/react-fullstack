@@ -3,7 +3,7 @@ export interface ProductEntity {
   productStringId: string;
   priceMYR: number;
   name: string;
-  photos: string[];
+  photo: string;
   stockCount: number;
   categoryId: number;
   brandId: number;
