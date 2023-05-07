@@ -4,10 +4,12 @@ import { BrandRepo } from './repos/brand.repo';
 import { ProductRepo } from './repos/product.repo';
 import { SingleArgConstructor } from '../common/types/single-arg-constructor.type';
 import { defaultDataSource } from './database.source';
+import { OrderHistoryRepo } from './repos/order-history.repo';
 
 const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   BrandRepo,
   ProductRepo,
+  OrderHistoryRepo,
 ];
 
 @Module({
@@ -18,7 +20,7 @@ const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
     },
     ...repositories,
   ],
-  exports: [...repositories],
+  exports: [DataSource, ...repositories],
 })
 export class DatabaseModule implements OnModuleInit, OnModuleDestroy {
   constructor(readonly dataSource: DataSource) {}
