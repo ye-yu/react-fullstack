@@ -191,9 +191,15 @@ export function ProductPanel() {
                         </PaginationItem>
                         {Array.from({ length: 5 }).map((_, i) => {
                           const pageNumber = currentData.page + i - 2;
-                          if (pageNumber < 1) return null;
-                          if (pageNumber * currentData.size > currentData.total)
+                          if (pageNumber < 1) {
                             return null;
+                          }
+                          if (
+                            (pageNumber - 1) * currentData.size >
+                            currentData.total
+                          ) {
+                            return null;
+                          }
                           return (
                             <PaginationItem
                               key={pageNumber}
