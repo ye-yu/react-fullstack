@@ -7,6 +7,7 @@ import { defaultDataSource } from './database.source';
 import { OrderHistoryRepo } from './repos/order-history.repo';
 import { ColorsRepo } from './repos/colors.repo';
 import { CategoryRepo } from './repos/category.repo';
+import { ProductsColorsRepo } from './repos/product-colors.repo';
 
 const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   BrandRepo,
@@ -14,6 +15,7 @@ const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
   OrderHistoryRepo,
   ColorsRepo,
   CategoryRepo,
+  ProductsColorsRepo,
 ];
 
 @Module({
