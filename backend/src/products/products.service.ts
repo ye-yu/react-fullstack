@@ -9,6 +9,9 @@ import { BrandRepo } from '../database/repos/brand.repo';
 import { ColorsRepo } from '../database/repos/colors.repo';
 import { CategoryRepo } from '../database/repos/category.repo';
 import { SearchOptions } from './dao/search-options.dao';
+import { ColorsEntity } from '../database/entities/product-color.entity';
+import { ProductsColorsRepo } from '../database/repos/product-colors.repo';
+import { ProductsColorsEntity } from '../database/entities/products-colors.entity';
 
 @Injectable()
 export class ProductsService {
@@ -17,6 +20,7 @@ export class ProductsService {
     readonly brandRepo: BrandRepo,
     readonly colorRepo: ColorsRepo,
     readonly categoryRepo: CategoryRepo,
+    readonly productsColorsRepo: ProductsColorsRepo,
   ) {}
 
   async searchOptions(): Promise<SearchOptions[]> {
@@ -77,54 +81,71 @@ export class ProductsService {
   async paginate(
     filter: FilterOptionDto,
     paginationOption: PaginationOptionDto,
-  ): Promise<PaginationResults<ProductEntity>> {
-    const where: FindOptionsWhere<ProductEntity> = {
+  ): Promise<PaginationResults<ProductEntity & { color: ColorsEntity }>> {
+    const whereProduct: FindOptionsWhere<ProductEntity> = {
       stockCount: MoreThan(0),
     };
 
+    const whereProductColor: FindOptionsWhere<ProductsColorsEntity> = {};
+
     if (filter.categoryIds) {
-      where.categoryId = In(filter.categoryIds);
+      whereProduct.categoryId = In(filter.categoryIds);
     }
 
     if (filter.brandIds) {
-      where.brandId = In(filter.brandIds);
+      whereProduct.brandId = In(filter.brandIds);
     }
 
     if (filter.colorIds) {
-      where.colors = {
-        id: In(filter.colorIds),
-      };
+      whereProductColor.colorsId = In(filter.colorIds);
     }
 
     if (filter.name) {
-      where.name = ILike(`%${filter.name}%`);
+      whereProduct.name = ILike(`%${filter.name}%`);
     }
 
-    const total = await this.productsRepo.count({
-      where,
-    });
-    const productsIdOnly = await this.productsRepo.find({
-      where,
-      take: paginationOption.size,
-      skip: (paginationOption.page - 1) * paginationOption.size,
-      select: {
-        id: true,
-      },
-    });
-
-    // colors do not load all, unless is reload it this way ://
-    const products = await this.productsRepo.find({
+    const total = await this.productsColorsRepo.count({
       where: {
-        id: In(productsIdOnly.map((e) => e.id)),
+        product: whereProduct,
+        ...whereProductColor,
       },
       relations: {
-        category: true,
-        brand: true,
-        colors: true,
+        product: {
+          category: true,
+          brand: true,
+        },
+        color: true,
       },
     });
 
-    const result: PaginationResults<ProductEntity> = {
+    const productsColors = await this.productsColorsRepo.find({
+      where: {
+        product: whereProduct,
+        ...whereProductColor,
+      },
+      take: paginationOption.size,
+      skip: (paginationOption.page - 1) * paginationOption.size,
+      relations: {
+        product: {
+          category: true,
+          brand: true,
+        },
+        color: true,
+      },
+      order: {
+        productsId: 'desc',
+      },
+    });
+
+    const products = productsColors.reduce((a, b, i) => {
+      a[i] = {
+        ...b.product,
+        color: b.color,
+      };
+      return a;
+    }, Array.from(productsColors) as unknown as Array<ProductEntity & { color: ColorsEntity }>);
+
+    const result: PaginationResults<ProductEntity & { color: ColorsEntity }> = {
       data: products,
       ...paginationOption,
       total,
