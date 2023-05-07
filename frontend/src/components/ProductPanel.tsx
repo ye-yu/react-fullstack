@@ -114,7 +114,9 @@ export function ProductPanel() {
                   <Card>
                     <img src={value.photos.find((e) => e)} alt={value.name} />
                     <CardBody>
-                      <CardTitle tag="h5">{value.name}</CardTitle>
+                      <CardTitle tag="h5">
+                        {value.name} ({value.color.name})
+                      </CardTitle>
                       <CardSubtitle className="mb-2 text-muted" tag="h6">
                         {value.brand?.name}
                       </CardSubtitle>
@@ -122,18 +124,20 @@ export function ProductPanel() {
                         <span style={{ fontSize: "0.8rem", display: "block" }}>
                           ({value.category.name})
                         </span>
-                        <span style={{ fontSize: "0.8rem" }}>
-                          {value.colors.map((e) => e.name).join(", ")}
+                        <span style={{ fontWeight: "bold" }}>
+                          RM {value.priceMYR}
                         </span>
                       </CardText>
 
-                      <CardText></CardText>
                       <Button
                         size="sm"
                         onClick={async () => {
                           try {
                             setRequesting(true);
-                            const success = await postPlaceOrder(value.id);
+                            const success = await postPlaceOrder(
+                              value.id,
+                              value.color.id
+                            );
                             if (success) {
                               setOrderPlacedAlert(value.name);
                               const newData = await goToPage(1);

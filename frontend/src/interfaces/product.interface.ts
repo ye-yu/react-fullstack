@@ -13,5 +13,5 @@ export interface ProductEntity {
   category: {
     name: string;
   };
-  colors: { name: string }[];
+  color: { id: number; name: string };
 }

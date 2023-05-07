@@ -5,6 +5,7 @@ export interface OrderEntity {
   priceDuringOrderMYR: number;
   photosDuringOrder: string[];
   nameDuringOrder: string;
+  colorDuringOrder: string;
   status: string;
   createdAt: string;
   updatedAt: string;
