@@ -11,6 +11,8 @@ import { OrderHistoryEntity } from '../database/entities/order.entity';
 import { DataSource, Equal } from 'typeorm';
 import { OrderStatus } from './constants/order-status.enum';
 import { ProductEntity } from '../database/entities/product.entity';
+import { PaginationOptionDto } from '../products/dto/pagination-options.dao';
+import { PaginationResults } from '../products/dao/pagination-results.dao';
 
 @Injectable()
 export class OrdersService {
@@ -79,6 +81,22 @@ export class OrdersService {
     return this.orderHistoryRepo.find({});
   }
 
+  async paginate(
+    paginationOption: PaginationOptionDto,
+  ): Promise<PaginationResults<OrderHistoryEntity>> {
+    const total = await this.orderHistoryRepo.count({});
+    const orderHistory = await this.orderHistoryRepo.find({
+      take: paginationOption.size,
+      skip: (paginationOption.page - 1) * paginationOption.size,
+    });
+
+    const result: PaginationResults<OrderHistoryEntity> = {
+      data: orderHistory,
+      ...paginationOption,
+      total,
+    };
+    return result;
+  }
   async update(id: number, updateOrderDto: UpdateOrderDto) {
     const status = updateOrderDto.status;
 
