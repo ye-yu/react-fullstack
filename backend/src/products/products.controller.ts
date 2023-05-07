@@ -13,8 +13,10 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get('search-options')
-  getSearchOptions() {
-    return this.productsService.searchOptions();
+  async getSearchOptions() {
+    return {
+      search: await this.productsService.searchOptions(),
+    };
   }
 
   @Post()
