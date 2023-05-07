@@ -71,7 +71,7 @@ export class OrdersService {
           `-${Math.random().toString(26).substring(5).toUpperCase()}`,
         productStringId: product.productStringId,
         priceDuringOrderMYR: product.priceMYR,
-        photosDuringOrder: product.photos,
+        photosDuringOrder: [], // let's leave empty, not in the requirements :)
         nameDuringOrder: product.name,
         colorDuringOrder:
           product.colors.find((e) => e.id === createOrderDto.colorId)?.name ??
