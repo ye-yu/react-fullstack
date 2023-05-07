@@ -1,7 +1,7 @@
 import { NoArgConstructor } from '../../common/types/no-arg-constructor.type';
 import { Repository } from 'typeorm';
 import { SeederType } from './seeder.type';
-import { ColorsEntity } from '../entities/product-color.entity';
+import { ColorEntity } from '../entities/color.entity';
 import { faker } from '@faker-js/faker';
 import { BrandEntity } from '../entities/brand.entity';
 import { CategoryEntity } from '../entities/category.entity';
@@ -35,11 +35,11 @@ export const InitialSeed: SeederType = {
       'Rose Gold',
       'Skin',
     ];
-    const productColorRepo = repoGetter(ColorsEntity);
+    const productColorRepo = repoGetter(ColorEntity);
     const colorsInsertResult = await productColorRepo
       .createQueryBuilder()
       .insert()
-      .into(ColorsEntity)
+      .into(ColorEntity)
       .values(
         availableColors.map((e) => ({
           name: e,
@@ -48,7 +48,7 @@ export const InitialSeed: SeederType = {
       .returning(['id', 'name'])
       .execute();
 
-    const colors = colorsInsertResult.generatedMaps as ColorsEntity[];
+    const colors = colorsInsertResult.generatedMaps as ColorEntity[];
 
     const availableCategories = [
       'Phone',

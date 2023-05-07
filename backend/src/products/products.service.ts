@@ -9,7 +9,7 @@ import { BrandRepo } from '../database/repos/brand.repo';
 import { ColorsRepo } from '../database/repos/colors.repo';
 import { CategoryRepo } from '../database/repos/category.repo';
 import { SearchOptions } from './dao/search-options.dao';
-import { ColorsEntity } from '../database/entities/product-color.entity';
+import { ColorEntity } from '../database/entities/color.entity';
 import { ProductsColorsRepo } from '../database/repos/product-colors.repo';
 import { ProductsColorsEntity } from '../database/entities/products-colors.entity';
 
@@ -81,7 +81,7 @@ export class ProductsService {
   async paginate(
     filter: FilterOptionDto,
     paginationOption: PaginationOptionDto,
-  ): Promise<PaginationResults<ProductEntity & { color: ColorsEntity }>> {
+  ): Promise<PaginationResults<ProductEntity & { color: ColorEntity }>> {
     const whereProduct: FindOptionsWhere<ProductEntity> = {
       stockCount: MoreThan(0),
     };
@@ -143,9 +143,9 @@ export class ProductsService {
         color: b.color,
       };
       return a;
-    }, Array.from(productsColors) as unknown as Array<ProductEntity & { color: ColorsEntity }>);
+    }, Array.from(productsColors) as unknown as Array<ProductEntity & { color: ColorEntity }>);
 
-    const result: PaginationResults<ProductEntity & { color: ColorsEntity }> = {
+    const result: PaginationResults<ProductEntity & { color: ColorEntity }> = {
       data: products,
       ...paginationOption,
       total,

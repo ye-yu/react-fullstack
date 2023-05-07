@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import { BrandEntity } from './entities/brand.entity';
 import { ProductEntity } from './entities/product.entity';
 import { CategoryEntity } from './entities/category.entity';
-import { ColorsEntity } from './entities/product-color.entity';
+import { ColorEntity } from './entities/color.entity';
 import { OrderHistoryEntity } from './entities/order.entity';
 import { CreateTables1683420792527 } from './migrations/1683420792527-CreateTables';
 import { ProductsColorsEntity } from './entities/products-colors.entity';
@@ -16,7 +16,7 @@ export const defaultDataSource = new DataSource({
     BrandEntity,
     ProductEntity,
     CategoryEntity,
-    ColorsEntity,
+    ColorEntity,
     OrderHistoryEntity,
     ProductsColorsEntity,
   ],

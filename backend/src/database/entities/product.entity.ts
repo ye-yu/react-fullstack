@@ -12,7 +12,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { BrandEntity } from './brand.entity';
-import { ColorsEntity } from './product-color.entity';
+import { ColorEntity } from './color.entity';
 import { CategoryEntity } from './category.entity';
 
 @Entity({ name: 'products' })
@@ -51,12 +51,12 @@ export class ProductEntity {
   })
   brand: BrandEntity;
 
-  @ManyToMany(() => ColorsEntity, (color) => color.products, {
+  @ManyToMany(() => ColorEntity, (color) => color.products, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinTable({ name: 'products_colors' })
-  colors: ColorsEntity[];
+  colors: ColorEntity[];
 
   @OneToOne(() => CategoryEntity, (category) => category.product)
   @JoinColumn({

@@ -1,5 +1,5 @@
 import { Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
-import { ColorsEntity } from './product-color.entity';
+import { ColorEntity } from './color.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'products_colors' })
@@ -10,11 +10,11 @@ export class ProductsColorsEntity {
   @PrimaryColumn()
   colorsId: number;
 
-  @OneToOne(() => ColorsEntity)
+  @OneToOne(() => ColorEntity)
   @JoinColumn({
     name: 'colorsId',
   })
-  color: ColorsEntity;
+  color: ColorEntity;
 
   @OneToOne(() => ProductEntity)
   @JoinColumn({

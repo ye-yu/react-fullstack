@@ -9,7 +9,7 @@ import {
 import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'colors' })
-export class ColorsEntity {
+export class ColorEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
