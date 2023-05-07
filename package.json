@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx concurrently -n \"server,web\" \"cd backend && npm run watch\" \"cd frontend && npm start\""
+    "start": "bash reset-and-start.sh",
+    "dev": "npx concurrently -n \"server,web\" \"cd backend && npm run watch\" \"sleep 2 && cd frontend && npm start\""
   },
   "keywords": [],
   "author": "",
