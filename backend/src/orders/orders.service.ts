@@ -25,6 +25,12 @@ export class OrdersService {
     const product = await this.productsRepo.findOne({
       where: {
         id: Equal(createOrderDto.productId),
+        colors: {
+          id: Equal(createOrderDto.colorId),
+        },
+      },
+      relations: {
+        colors: true,
       },
     });
 
@@ -33,6 +39,7 @@ export class OrdersService {
         {
           message: `product id of ${createOrderDto.productId} is not found`,
           productId: createOrderDto.productId,
+          colorId: createOrderDto.colorId,
         },
         'Not Found',
       );
@@ -46,6 +53,7 @@ export class OrdersService {
         'Out of Stock',
       );
     }
+
     return await this.dataSource.transaction(async (em) => {
       const productRepo = em.getRepository(ProductEntity);
       await productRepo.decrement(
@@ -65,6 +73,9 @@ export class OrdersService {
         priceDuringOrderMYR: product.priceMYR,
         photosDuringOrder: product.photos,
         nameDuringOrder: product.name,
+        colorDuringOrder:
+          product.colors.find((e) => e.id === createOrderDto.colorId)?.name ??
+          'not found',
         status: OrderStatus.Open,
         product,
         createdAt: new Date(),

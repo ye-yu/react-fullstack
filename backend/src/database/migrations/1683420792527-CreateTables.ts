@@ -69,6 +69,7 @@ export class CreateTables1683420792527 implements MigrationInterface {
         "priceDuringOrderMYR" integer NOT NULL,
         "photosDuringOrder" text NOT NULL,
         "nameDuringOrder" character varying NOT NULL,
+        "colorDuringOrder" character varying NOT NULL,
         "status" character varying NOT NULL,
         "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
         "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),

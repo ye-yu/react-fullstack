@@ -32,6 +32,9 @@ export class OrderHistoryEntity {
   nameDuringOrder: string;
 
   @Column()
+  colorDuringOrder: string;
+
+  @Column()
   status: string;
 
   @Column({
