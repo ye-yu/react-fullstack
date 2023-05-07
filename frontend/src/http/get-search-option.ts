@@ -1,6 +1,7 @@
 import { SearchOptions } from "../interfaces/search-options.interface";
 
 export async function getSearchOptions(): Promise<SearchOptions[]> {
+  process.env.REACT_APP_BACKEND_URL ??= "http://localhost:3001";
   if (!process.env.REACT_APP_BACKEND_URL) return [];
   try {
     const url = new URL(

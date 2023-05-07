@@ -2,6 +2,7 @@ export async function postPlaceOrder(
   productId: number,
   colorId: number
 ): Promise<boolean> {
+  process.env.REACT_APP_BACKEND_URL ??= "http://localhost:3001";
   if (!process.env.REACT_APP_BACKEND_URL) return false;
   try {
     const url = new URL("/orders", process.env.REACT_APP_BACKEND_URL);

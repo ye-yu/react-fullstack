@@ -15,6 +15,7 @@ export async function getOrderHistory(
     total: 0,
     results: [],
   };
+  process.env.REACT_APP_BACKEND_URL ??= "http://localhost:3001";
   if (!process.env.REACT_APP_BACKEND_URL) return emptyPagination;
   try {
     const url = pageUrl
