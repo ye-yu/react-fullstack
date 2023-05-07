@@ -49,7 +49,6 @@ export class CreateTables1683420792527 implements MigrationInterface {
         "photos" text NOT NULL,
         "stockCount" integer NOT NULL,
         "brandId" integer NOT NULL,
-        "colorId" integer NOT NULL,
         "categoryId" integer NOT NULL,
         "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
         "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),

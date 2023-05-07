@@ -42,9 +42,6 @@ export class ProductEntity {
   @Column()
   brandId: number;
 
-  @Column()
-  colorId: number;
-
   @ManyToOne(() => BrandEntity, (brand) => brand.products, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
