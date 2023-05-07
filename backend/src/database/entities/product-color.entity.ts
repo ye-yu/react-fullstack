@@ -4,19 +4,19 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 
-@Entity({ name: 'product_colors' })
-export class ProductColorsEntity {
+@Entity({ name: 'colors' })
+export class ColorsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @OneToMany(() => ProductEntity, (product) => product.color, {
+  @ManyToMany(() => ProductEntity, (product) => product.colors, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

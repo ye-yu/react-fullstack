@@ -4,10 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
   ManyToMany,
-  JoinTable,
+  OneToOne,
 } from 'typeorm';
+import { ProductEntity } from './product.entity';
 import { BrandEntity } from './brand.entity';
 
 @Entity({ name: 'categories' })
@@ -18,17 +18,13 @@ export class CategoryEntity {
   @Column()
   name: string;
 
-  @Column()
-  brandId: number;
-
-  @ManyToMany(() => BrandEntity, (brand) => brand.categories, {
+  @OneToOne(() => ProductEntity, (product) => product.category, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({
-    name: 'brandId',
-  })
-  @JoinTable({ name: 'brands_categories' })
+  product: ProductEntity;
+
+  @ManyToMany(() => BrandEntity, (brand) => brand.categories)
   brands: BrandEntity[];
 
   @Column({

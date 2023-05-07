@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToMany,
-  JoinColumn,
+  JoinTable,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { CategoryEntity } from './category.entity';
@@ -32,11 +32,19 @@ export class BrandEntity {
   updatedAt: Date;
 
   @OneToMany(() => ProductEntity, (product) => product.brand)
-  products: ProductEntity;
+  products: ProductEntity[];
 
   @ManyToMany(() => CategoryEntity, (category) => category.brands)
-  @JoinColumn({
-    name: 'categoryId',
+  @JoinTable({
+    name: 'products',
+    joinColumn: {
+      name: 'brandId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'categoryId',
+      referencedColumnName: 'id',
+    },
   })
   categories: CategoryEntity[];
 }

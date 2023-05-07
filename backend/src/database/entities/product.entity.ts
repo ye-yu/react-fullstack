@@ -6,17 +6,38 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  Index,
+  OneToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { BrandEntity } from './brand.entity';
-import { ProductColorsEntity } from './product-color.entity';
+import { ColorsEntity } from './product-color.entity';
+import { CategoryEntity } from './category.entity';
 
 @Entity({ name: 'products' })
 export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ length: 100 })
+  @Index({ unique: true })
+  productStringId: string;
+
+  @Column()
+  priceMYR: number;
+
   @Column()
   name: string;
+
+  @Column({ type: 'simple-array' })
+  photos: string[];
+
+  @Column()
+  stockCount: number;
+
+  @Column()
+  categoryId: number;
 
   @Column()
   brandId: number;
@@ -33,14 +54,18 @@ export class ProductEntity {
   })
   brand: BrandEntity;
 
-  @ManyToOne(() => ProductColorsEntity, (color) => color.products, {
+  @ManyToMany(() => ColorsEntity, (color) => color.products, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinTable({ name: 'products_colors' })
+  colors: ColorsEntity[];
+
+  @OneToOne(() => CategoryEntity, (category) => category.product)
   @JoinColumn({
-    name: 'colorId',
+    name: 'categoryId',
   })
-  color: ProductColorsEntity;
+  category: CategoryEntity;
 
   @Column({
     type: 'datetime',
