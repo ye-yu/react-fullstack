@@ -44,8 +44,10 @@ export function usePagination<T>(
     [fetcher]
   );
 
-  const nextPage = () => nextPageUrl && goToUrl(nextPageUrl);
-  const previousPage = () => previousPageUrl && goToUrl(previousPageUrl);
+  const nextPage = () =>
+    nextPageUrl ? goToUrl(nextPageUrl) : Promise.resolve(null);
+  const previousPage = () =>
+    previousPageUrl ? goToUrl(previousPageUrl) : Promise.resolve(null);
 
   return [nextPage, previousPage, goToPage] as const;
 }
