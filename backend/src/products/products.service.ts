@@ -141,9 +141,10 @@ export class ProductsService {
       a[i] = {
         ...b.product,
         color: b.color,
+        photo: b.photos?.find((e) => e) ?? '',
       };
       return a;
-    }, Array.from(productsColors) as unknown as Array<ProductEntity & { color: ColorEntity }>);
+    }, Array.from(productsColors) as unknown as Array<ProductEntity & { color: ColorEntity; photo: string }>);
 
     const result: PaginationResults<ProductEntity & { color: ColorEntity }> = {
       data: products,
