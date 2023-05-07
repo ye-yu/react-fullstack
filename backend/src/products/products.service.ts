@@ -24,7 +24,7 @@ export class ProductsService {
       name: 'name',
       label: 'Product Name',
       placeholder: 'Enter Product Name',
-      type: 'string',
+      type: 'text',
       options: [],
     };
 
