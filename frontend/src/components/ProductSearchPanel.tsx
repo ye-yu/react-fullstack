@@ -27,10 +27,16 @@ export function ProductSearchPanel({
             [option.name]: null,
           }));
         }
+
+        // start empty search request
+        setSearchInputs((current) => {
+          onSearch(current);
+          return current;
+        });
       });
     }
     return searchAvailable;
-  }, [searchOptions]);
+  }, [onSearch, searchOptions]);
 
   return (
     <Container>
