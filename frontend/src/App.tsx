@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "reactstrap";
 import { ProductPanel } from "./components/ProductPanel";
+import { OrderPanel } from "./components/OrderPanel";
 
 enum Panel {
   Product = "Product",
@@ -34,6 +35,7 @@ export default function App() {
         </Col>
       </Row>
       {panel === Panel.Product && <ProductPanel />}
+      {panel === Panel.Order && <OrderPanel />}
     </Container>
   );
 }
