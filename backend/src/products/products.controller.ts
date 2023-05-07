@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { FilterOptionDto } from './dto/filter-option.dto';
 import { ToNumber } from '../common/pipes/to-number.pipe';
@@ -11,6 +11,11 @@ import { RequestUrl } from '../common/decorators/request-url.decorator';
 })
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
+
+  @Get('search-options')
+  getSearchOptions() {
+    return this.productsService.searchOptions();
+  }
 
   @Post()
   @HttpCode(200)
