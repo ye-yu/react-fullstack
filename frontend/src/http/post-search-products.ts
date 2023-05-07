@@ -19,7 +19,7 @@ export async function postSearchProducts(
   if (!process.env.REACT_APP_BACKEND_URL) return emptyPagination;
   try {
     const url = pageUrl
-      ? new URL(pageUrl)
+      ? new URL(pageUrl, process.env.REACT_APP_BACKEND_URL)
       : new URL("/products", process.env.REACT_APP_BACKEND_URL);
     if (paginationOption) {
       url.searchParams.set("page", `${paginationOption.page}`);
