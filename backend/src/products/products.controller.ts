@@ -3,7 +3,7 @@ import { ProductsService } from './products.service';
 import { FilterOptionDto } from './dto/filter-option.dto';
 import { ToNumber } from '../common/pipes/to-number.pipe';
 import { PaginationOptionDto } from './dto/pagination-options.dao';
-import { RequestUrl } from '../common/decorators/request-url.decorator';
+import { RequestPath } from '../common/decorators/request-path.decorator';
 
 @Controller({
   version: '1',
@@ -37,7 +37,7 @@ export class ProductsController {
       }),
     )
     size: number,
-    @RequestUrl(true) requestUrl: string,
+    @RequestPath(true) requestUrl: string,
   ) {
     const paginationOption: PaginationOptionDto = {
       page,
