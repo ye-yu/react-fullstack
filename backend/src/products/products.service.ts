@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepo } from '../database/repos/product.repo';
-import { FilterOptionDao } from './dao/filter-option.dao';
+import { FilterOptionDto } from './dto/filter-option.dto';
 import { ProductEntity } from '../database/entities/product.entity';
 import { FindOptionsWhere, In } from 'typeorm';
-import { PaginationOption } from './dao/pagination-options.dao';
+import { PaginationOptionDto } from './dto/pagination-options.dao';
 import { PaginationResults } from './dao/pagination-results.dao';
 
 @Injectable()
@@ -13,8 +11,8 @@ export class ProductsService {
   constructor(readonly productsRepo: ProductRepo) {}
 
   async paginate(
-    filter: FilterOptionDao,
-    paginationOption: PaginationOption,
+    filter: FilterOptionDto,
+    paginationOption: PaginationOptionDto,
   ): Promise<PaginationResults<ProductEntity>> {
     const where: FindOptionsWhere<ProductEntity> = {};
     if (filter.categoryIds) {

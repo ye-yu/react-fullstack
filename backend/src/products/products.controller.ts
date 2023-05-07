@@ -1,8 +1,8 @@
 import { Body, Controller, HttpCode, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { FilterOptionDao } from './dao/filter-option.dao';
+import { FilterOptionDto } from './dto/filter-option.dto';
 import { ToNumber } from '../common/pipes/to-number.pipe';
-import { PaginationOption } from './dao/pagination-options.dao';
+import { PaginationOptionDto } from './dto/pagination-options.dao';
 import { RequestUrl } from '../common/decorators/request-url.decorator';
 
 @Controller({
@@ -15,7 +15,7 @@ export class ProductsController {
   @Post()
   @HttpCode(200)
   async findAll(
-    @Body() filter: FilterOptionDao,
+    @Body() filter: FilterOptionDto,
     @Query(
       'page',
       ToNumber(1, {
@@ -32,7 +32,7 @@ export class ProductsController {
     size: number,
     @RequestUrl(true) requestUrl: string,
   ) {
-    const paginationOption: PaginationOption = {
+    const paginationOption: PaginationOptionDto = {
       page,
       size,
     };
