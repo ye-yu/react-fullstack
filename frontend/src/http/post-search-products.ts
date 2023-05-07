@@ -20,7 +20,7 @@ export async function postSearchProducts(
   try {
     const url = pageUrl
       ? new URL(pageUrl)
-      : new URL("/products/search-options", process.env.REACT_APP_BACKEND_URL);
+      : new URL("/products", process.env.REACT_APP_BACKEND_URL);
     if (paginationOption) {
       url.searchParams.set("page", `${paginationOption.page}`);
       url.searchParams.set("size", `${paginationOption.size}`);
@@ -34,7 +34,7 @@ export async function postSearchProducts(
     });
     if (request.headers.get("content-type")?.includes("application/json")) {
       const parsedJson = await request.json();
-      return parsedJson.search;
+      return parsedJson;
     } else {
       return emptyPagination;
     }
