@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepo } from '../database/repos/product.repo';
 import { FilterOptionDto } from './dto/filter-option.dto';
 import { ProductEntity } from '../database/entities/product.entity';
-import { FindOptionsWhere, In } from 'typeorm';
+import { FindOptionsWhere, ILike, In } from 'typeorm';
 import { PaginationOptionDto } from './dto/pagination-options.dao';
 import { PaginationResults } from './dao/pagination-results.dao';
 
@@ -18,6 +18,19 @@ export class ProductsService {
     if (filter.categoryIds) {
       where.categoryId = In(filter.categoryIds);
     }
+
+    if (filter.brandIds) {
+      where.brandId = In(filter.brandIds);
+    }
+
+    if (filter.colorIds) {
+      where.colorId = In(filter.colorIds);
+    }
+
+    if (filter.name) {
+      where.name = ILike(`%${filter.name}%`);
+    }
+
     const total = await this.productsRepo.count({
       where,
     });

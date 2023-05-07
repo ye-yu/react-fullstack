@@ -1,2 +1,8 @@
 POST /products?size=5&page=1
 host: {{host}}
+Content-Type: application/json
+
+{
+  "categoryIds": [1],
+  "name": ""
+}
