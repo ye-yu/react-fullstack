@@ -7,4 +7,11 @@ export interface ProductEntity {
   stockCount: number;
   categoryId: number;
   brandId: number;
+  brand: {
+    name: string;
+  };
+  category: {
+    name: string;
+  };
+  colors: { name: string }[];
 }

@@ -99,9 +99,18 @@ export function ProductPanel() {
                     <CardBody>
                       <CardTitle tag="h5">{value.name}</CardTitle>
                       <CardSubtitle className="mb-2 text-muted" tag="h6">
-                        {value.brandId}
+                        {value.brand?.name}
                       </CardSubtitle>
-                      <CardText>Available colors:</CardText>
+                      <CardText>
+                        <span style={{ fontSize: "0.8rem", display: "block" }}>
+                          ({value.category.name})
+                        </span>
+                        <span style={{ fontSize: "0.8rem" }}>
+                          {value.colors.map((e) => e.name).join(", ")}
+                        </span>
+                      </CardText>
+
+                      <CardText></CardText>
                       <Button size="sm">Place Order</Button>
                     </CardBody>
                   </Card>
