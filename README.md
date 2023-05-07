@@ -28,6 +28,12 @@ Replace `postgres` with your database username, `compasia` with the name of the 
 
 ## 3. Starting Server
 
+Navigate to `backend` directory. All backend command should be executed in this directory.
+
+```sh
+cd backend
+```
+
 Create `.env` with the following variables:
 
 ```sh
@@ -48,6 +54,12 @@ curl http://localhost:3001/products/search-options
 ```
 
 ## 4. Starting Web App
+
+Navigate to `frontend` directory. All frontend command should be executed in this directory.
+
+```sh
+cd frontend
+```
 
 React app is using a defaulted environment variable of
 
