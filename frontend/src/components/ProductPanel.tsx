@@ -11,6 +11,7 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
+  UncontrolledAlert,
 } from "reactstrap";
 import { ProductSearchPanel } from "./ProductSearchPanel";
 import { usePagination } from "../hooks/use-pagination";
@@ -19,8 +20,11 @@ import { useCallback, useEffect, useState } from "react";
 import { PaginationResults } from "../interfaces/pagination-results.interface";
 import { ProductEntity } from "../interfaces/product.interface";
 import { PaginationOption } from "../interfaces/pagination-options.interface";
+import { postPlaceOrder } from "../http/post-place-order";
 
 export function ProductPanel() {
+  const [orderPlacedAlert, setOrderPlacedAlert] = useState("");
+  const [orderFailedAlert, setOrderFailedAlert] = useState("");
   const [searchInputs, setSearchInputs] = useState<Record<string, any>>({});
   const [currentData, setCurrentData] =
     useState<PaginationResults<ProductEntity> | null>(null);
@@ -75,6 +79,19 @@ export function ProductPanel() {
       </Col>
       <Col xs="9">
         <Container className="mt-5" fluid>
+          {orderPlacedAlert && (
+            <UncontrolledAlert key={orderPlacedAlert} color="info">
+              Order of{" "}
+              <span style={{ fontWeight: "bold" }}>{orderPlacedAlert}</span> has
+              been placed.
+            </UncontrolledAlert>
+          )}
+          {orderFailedAlert && (
+            <UncontrolledAlert key={orderFailedAlert} color="error">
+              Failed to place order for{" "}
+              <span style={{ fontWeight: "bold" }}>{orderFailedAlert}</span>!
+            </UncontrolledAlert>
+          )}
           {requesting && (
             <Row>
               <Col style={{ textAlign: "center" }}>Fetching...</Col>
@@ -111,7 +128,26 @@ export function ProductPanel() {
                       </CardText>
 
                       <CardText></CardText>
-                      <Button size="sm">Place Order</Button>
+                      <Button
+                        size="sm"
+                        onClick={async () => {
+                          try {
+                            setRequesting(true);
+                            const success = await postPlaceOrder(value.id);
+                            if (success) {
+                              setOrderPlacedAlert(value.name);
+                              const newData = await goToPage(1);
+                              setCurrentData(newData);
+                            } else {
+                              setOrderFailedAlert(value.name);
+                            }
+                          } finally {
+                            setRequesting(false);
+                          }
+                        }}
+                      >
+                        Place Order
+                      </Button>
                     </CardBody>
                   </Card>
                 </Col>
