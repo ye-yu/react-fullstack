@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepo } from '../database/repos/product.repo';
 import { FilterOptionDto } from './dto/filter-option.dto';
 import { ProductEntity } from '../database/entities/product.entity';
-import { FindOptionsWhere, ILike, In } from 'typeorm';
+import { FindOptionsWhere, ILike, In, MoreThan } from 'typeorm';
 import { PaginationOptionDto } from './dto/pagination-options.dao';
 import { PaginationResults } from './dao/pagination-results.dao';
 
@@ -14,7 +14,10 @@ export class ProductsService {
     filter: FilterOptionDto,
     paginationOption: PaginationOptionDto,
   ): Promise<PaginationResults<ProductEntity>> {
-    const where: FindOptionsWhere<ProductEntity> = {};
+    const where: FindOptionsWhere<ProductEntity> = {
+      stockCount: MoreThan(0),
+    };
+
     if (filter.categoryIds) {
       where.categoryId = In(filter.categoryIds);
     }
