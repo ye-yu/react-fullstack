@@ -73,7 +73,7 @@ export function OrderPanel() {
                       <th scope="row">{order.orderId}</th>
                       <td>{order.productStringId}</td>
                       <td>{order.nameDuringOrder}</td>
-                      <td>{"no color"}</td>
+                      <td>{order.colorDuringOrder}</td>
                       <td>{order.status}</td>
                       <td>{new Date(order.createdAt).toLocaleString()}</td>
                       <td>
