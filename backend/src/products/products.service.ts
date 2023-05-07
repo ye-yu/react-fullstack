@@ -103,10 +103,25 @@ export class ProductsService {
     const total = await this.productsRepo.count({
       where,
     });
-    const products = await this.productsRepo.find({
+    const productsIdOnly = await this.productsRepo.find({
       where,
       take: paginationOption.size,
       skip: (paginationOption.page - 1) * paginationOption.size,
+      select: {
+        id: true,
+      },
+    });
+
+    // colors do not load all, unless is reload it this way ://
+    const products = await this.productsRepo.find({
+      where: {
+        id: In(productsIdOnly.map((e) => e.id)),
+      },
+      relations: {
+        category: true,
+        brand: true,
+        colors: true,
+      },
     });
 
     const result: PaginationResults<ProductEntity> = {
