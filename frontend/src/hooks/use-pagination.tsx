@@ -5,12 +5,15 @@ import { PaginationResults } from "../interfaces/pagination-results.interface";
 export function usePagination<T>(
   size: number,
   fetcher: (
+    payload: any,
     paginationOption?: PaginationOption,
     pageUrl?: string
   ) => Promise<PaginationResults<T>>
 ) {
+  const [payload, setPayload] = useState<any>();
   const [currentPage, setCurrentPage] = useState<number | null>(null);
   const [currentData, setCurrentData] = useState<PaginationResults<T>>();
+
   const goToPage = useCallback(
     async (page: number): Promise<void> => {
       const paginationOption: PaginationOption = {
@@ -19,28 +22,25 @@ export function usePagination<T>(
       };
 
       try {
-        const result = await fetcher(paginationOption);
+        const result = await fetcher(payload, paginationOption);
         setCurrentPage(result.page);
         setCurrentData(result);
       } catch {
         setCurrentPage(null);
       }
     },
-    [fetcher, size]
+    [fetcher, payload, size]
   );
 
-  const goToUrl = useCallback(
-    async (url: string): Promise<void> => {
-      try {
-        const result = await fetcher(void 0, url);
-        setCurrentPage(result.page);
-        setCurrentData(result);
-      } catch {
-        setCurrentPage(null);
-      }
-    },
-    [fetcher]
-  );
+  const goToUrl = async (url: string): Promise<void> => {
+    try {
+      const result = await fetcher(payload, void 0, url);
+      setCurrentPage(result.page);
+      setCurrentData(result);
+    } catch {
+      setCurrentPage(null);
+    }
+  };
 
   const ready = useMemo(() => {
     const ready = currentPage !== null;
@@ -62,5 +62,12 @@ export function usePagination<T>(
   const previousPage = () =>
     hasPreviousPage && goToUrl(currentData!.previousPageUrl);
 
-  return [ready, currentData, nextPage, previousPage, goToPage];
+  return [
+    ready,
+    currentData,
+    setPayload,
+    nextPage,
+    previousPage,
+    goToPage,
+  ] as const;
 }
