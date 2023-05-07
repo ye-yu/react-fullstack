@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { NoArgConstructor } from 'src/common/types/no-arg-constructor.type';
-import { SingleArgConstructor } from 'src/common/types/single-arg-constructor.type';
+import { NoArgConstructor } from '../../common/types/no-arg-constructor.type';
+import { SingleArgConstructor } from '../../common/types/single-arg-constructor.type';
 import { DataSource, Repository } from 'typeorm';
 
 type withDataSourceConstructor<T = any> = SingleArgConstructor<DataSource, T>;

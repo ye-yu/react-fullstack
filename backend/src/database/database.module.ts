@@ -2,7 +2,7 @@ import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { BrandRepo } from './repos/brand.repo';
 import { ProductRepo } from './repos/product.repo';
-import { SingleArgConstructor } from 'src/common/types/single-arg-constructor.type';
+import { SingleArgConstructor } from '../common/types/single-arg-constructor.type';
 import { defaultDataSource } from './database.source';
 
 const repositories: SingleArgConstructor<DataSource, Repository<any>>[] = [
