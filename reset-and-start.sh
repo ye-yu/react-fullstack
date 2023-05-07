@@ -20,6 +20,7 @@ info "Preparing backend"
 cd backend \
   && npm install \
   && echo "DATABASE_URL=\"$1\"" > .env \
+  && npm run build \
   && cd ../ || exit 1
 
 echo ""
@@ -36,7 +37,7 @@ cd backend && npm run seed && cd ../ || exit 1
 
 
 echo ""
-info "Prepating frontend"
+info "Preparing frontend"
 cd frontend \
   && npm install \
   && echo "REACT_APP_BACKEND_URL=http://localhost:3001" > .env \
