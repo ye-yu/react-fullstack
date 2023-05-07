@@ -7,6 +7,7 @@ import {
   PaginationLink,
   Row,
   Table,
+  UncontrolledAlert,
 } from "reactstrap";
 import { getOrderHistory } from "../http/get-order-history";
 import { useState, useCallback, useMemo } from "react";
@@ -14,8 +15,11 @@ import { usePagination } from "../hooks/use-pagination";
 import { PaginationOption } from "../interfaces/pagination-options.interface";
 import { PaginationResults } from "../interfaces/pagination-results.interface";
 import { OrderEntity } from "../interfaces/order.interface";
+import { postChangeOrderStatus } from "../http/post-change-order-status";
 
 export function OrderPanel() {
+  const [orderCompletedAlert, setOrderCompletedAlert] = useState("");
+
   const [currentData, setCurrentData] =
     useState<PaginationResults<OrderEntity> | null>(null);
   const getPaginatedProductListing = useCallback(
@@ -53,6 +57,13 @@ export function OrderPanel() {
     <Container>
       <Row className="mt-5">
         <Col xs="12">
+          {orderCompletedAlert && (
+            <UncontrolledAlert key={orderCompletedAlert} color="info">
+              Order ID of{" "}
+              <span style={{ fontWeight: "bold" }}>{orderCompletedAlert}</span>{" "}
+              has been marked "Completed".
+            </UncontrolledAlert>
+          )}
           {!requesting && (
             <Table>
               <thead>
@@ -78,7 +89,24 @@ export function OrderPanel() {
                       <td>{new Date(order.createdAt).toLocaleString()}</td>
                       <td>
                         {order.status === "Open" && (
-                          <Button>Set Completed</Button>
+                          <Button
+                            onClick={async () => {
+                              try {
+                                await postChangeOrderStatus(
+                                  order.id,
+                                  "Completed"
+                                );
+                                const newData = await goToPage(
+                                  currentData.page
+                                );
+                                setOrderCompletedAlert(order.orderId);
+                                setCurrentData(newData);
+                              } finally {
+                              }
+                            }}
+                          >
+                            Set Completed
+                          </Button>
                         )}
                       </td>
                     </tr>
