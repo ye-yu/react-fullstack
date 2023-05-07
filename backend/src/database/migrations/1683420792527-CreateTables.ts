@@ -46,7 +46,6 @@ export class CreateTables1683420792527 implements MigrationInterface {
         "productStringId" character varying(100) NOT NULL,
         "priceMYR" integer NOT NULL,
         "name" character varying NOT NULL,
-        "photos" text NOT NULL,
         "stockCount" integer NOT NULL,
         "brandId" integer NOT NULL,
         "categoryId" integer NOT NULL,
@@ -86,6 +85,7 @@ export class CreateTables1683420792527 implements MigrationInterface {
       CREATE TABLE "products_colors" (
         "productsId" integer NOT NULL,
         "colorsId" integer NOT NULL,
+        "photos" text,
         CONSTRAINT "PK_da5221f174da1440f32c741ace6" PRIMARY KEY ("productsId", "colorsId"),
         CONSTRAINT "FK_7ce14c5692d5cd003d8a436a53c" FOREIGN KEY ("colorsId") REFERENCES "colors"("id") ON DELETE CASCADE ON UPDATE CASCADE
       )

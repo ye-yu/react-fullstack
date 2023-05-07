@@ -30,9 +30,6 @@ export class ProductEntity {
   @Column()
   name: string;
 
-  @Column({ type: 'simple-array' })
-  photos: string[];
-
   @Column()
   stockCount: number;
 

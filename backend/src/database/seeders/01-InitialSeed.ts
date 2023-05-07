@@ -6,6 +6,7 @@ import { faker } from '@faker-js/faker';
 import { BrandEntity } from '../entities/brand.entity';
 import { CategoryEntity } from '../entities/category.entity';
 import { ProductEntity } from '../entities/product.entity';
+import { ProductsColorsEntity } from '../entities/products-colors.entity';
 
 function select<T>(arr: T[], min = 1, max = arr.length): T[] {
   const shallowCopied = [...arr].sort(() => Math.random() - 0.5);
@@ -35,6 +36,17 @@ export const InitialSeed: SeederType = {
       'Rose Gold',
       'Skin',
     ];
+    const colorToHex = {
+      Red: 'FF7F7F',
+      Green: '7FFF7F',
+      Blue: '7F7FFF',
+      White: 'FFFFFF',
+      Grey: 'BFBFBF',
+      Teal: '7FBFBF',
+      'Sea Blue': '80A8CC',
+      'Rose Gold': 'D8A8B6',
+      Skin: 'FDE6D9',
+    };
     const productColorRepo = repoGetter(ColorEntity);
     const colorsInsertResult = await productColorRepo
       .createQueryBuilder()
@@ -77,6 +89,7 @@ export const InitialSeed: SeederType = {
     );
     const brandsRepo = repoGetter(BrandEntity);
     const productsRepo = repoGetter(ProductEntity);
+    const productsColorsRepo = repoGetter(ProductsColorsEntity);
     // make 10 products for each brand
     for (const brand of availableBrands) {
       const productPrefix = Math.random()
@@ -84,14 +97,12 @@ export const InitialSeed: SeederType = {
         .slice(2, 8)
         .toUpperCase();
 
-      const brandColor = Math.random().toString(16).substring(2, 8);
       const products = Array.from({ length: 10 }).map((_, index) => {
         const indexString = `${index}`.padStart(4, '0');
         const selectedColors = select(colors, 2, 4);
         const selectedCategory = selectOne(categories);
         const fakedName = faker.commerce.productName();
         const name = `${fakedName} ${selectedCategory.name}`;
-        const nameSpacedByPlus = name.split(' ').join('+');
         const product: Omit<
           ProductEntity,
           'id' | 'brand' | 'brandId' | 'categoryId' | 'colorId'
@@ -99,9 +110,6 @@ export const InitialSeed: SeederType = {
           productStringId: `${productPrefix}${indexString}`,
           priceMYR: 500 + Math.ceil(Math.random() * 3000),
           name,
-          photos: [
-            `https://dummyimage.com/600x400/${brandColor}/333.png&text=${nameSpacedByPlus}`,
-          ],
           stockCount: 1,
           colors: selectedColors,
           category: selectedCategory,
@@ -120,9 +128,26 @@ export const InitialSeed: SeederType = {
       };
 
       await brandsRepo.save(brandEntity);
-      await productsRepo.save(
+      const savedProductsResult = await productsRepo.save(
         brandEntity.products.map((e) => ({ ...e, brand: brandEntity })),
       );
+      for (const product of savedProductsResult) {
+        for (const color of product.colors) {
+          const nameSpacedByPlus = product.name.split(' ').join('+');
+          const colorHex = colorToHex[color.name].toLocaleLowerCase();
+
+          await productsColorsRepo.upsert(
+            {
+              productsId: product.id,
+              colorsId: color.id,
+              photos: [
+                `https://dummyimage.com/600x400/${colorHex}/333.png&text=${nameSpacedByPlus}`,
+              ],
+            },
+            ['productsId', 'colorsId'],
+          );
+        }
+      }
     }
 
     return;

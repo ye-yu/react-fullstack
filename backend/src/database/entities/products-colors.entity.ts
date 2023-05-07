@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { ColorEntity } from './color.entity';
 import { ProductEntity } from './product.entity';
 
@@ -21,4 +21,7 @@ export class ProductsColorsEntity {
     name: 'productsId',
   })
   product: ProductEntity;
+
+  @Column({ type: 'simple-array' })
+  photos: string[];
 }
