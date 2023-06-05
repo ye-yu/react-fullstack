@@ -11,7 +11,7 @@ Dependencies:
 Database commands:
 
 ```sql
-CREATE DATABASE "compasia";
+CREATE DATABASE "database";
 --               ^^^^^^^^
 --               can be replaced with any database name
 ```
@@ -21,10 +21,10 @@ CREATE DATABASE "compasia";
 File: db_dump/database.sql
 
 ```
-psql -U postgres -d compasia -f db_dump/database.sql
+psql -U postgres -d database -f db_dump/database.sql
 ```
 
-Replace `postgres` with your database username, `compasia` with the name of the database you want to restore the dump into.
+Replace `postgres` with your database username, `database` with the name of the database you want to restore the dump into.
 
 ## 3. Starting Server
 
@@ -37,7 +37,7 @@ cd backend
 Create `.env` with the following variables:
 
 ```sh
-DATABASE_URL="postgres://postgres:abc123@127.0.0.1:5432/compasia"
+DATABASE_URL="postgres://postgres:abc123@127.0.0.1:5432/database"
 ```
 
 Run install and start command
@@ -81,5 +81,5 @@ npm start
 Running the following command will attempt to drop all tables, recreate tables, reseed, and simultaneously start server and web app in one command
 
 ```sh
-bash reset-and-start.sh "postgres://postgres:abc123@127.0.0.1:5432/compasia"
+bash reset-and-start.sh "postgres://postgres:abc123@127.0.0.1:5432/database"
 ```
